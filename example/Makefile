@@ -13,3 +13,6 @@ libcgobs_example.a:
 
 example: $(HEADERS) $(LIBS)
 	go build
+
+run: example
+	./example

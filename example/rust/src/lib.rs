@@ -1,16 +1,14 @@
-use ::cgobs::sys;
+use cgobs::Blockstore;
+use cid::multihash::{Code, MultihashDigest};
+use cid::Cid;
 
 #[no_mangle]
 pub extern "C" fn write_a_block(store: i32) -> i32 {
-    let cid = "foobar";
-    let block = "data";
-    unsafe {
-        return sys::cgobs_put(
-            store,
-            cid.as_ptr(),
-            cid.len() as i32,
-            block.as_ptr(),
-            block.len() as i32,
-        );
+    let bs = unsafe { Blockstore::new(store) };
+    let block = b"thing";
+    let key = Cid::new_v1(0x55, Code::Sha2_256.digest(block));
+    match bs.put(&key, block) {
+        Ok(_) => 0,
+        Err(_) => 1,
     }
 }

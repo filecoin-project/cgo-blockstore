@@ -10,4 +10,5 @@ crate-type = ["staticlib"]
 
 [dependencies]
 cgobs = { path = "../../rust" }
+cid = "0.7.0"
 

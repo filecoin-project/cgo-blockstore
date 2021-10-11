@@ -19,7 +19,7 @@ func toCid(k C.buf_t, k_len C.int32_t) cid.Cid {
 }
 
 //export cgobs_get
-func cgobs_get(store C.int32_t, k C.buf_t, k_len C.int32_t, block *C.buf_t, size *C.int32_t) C.int32_t {
+func cgobs_get(store C.int32_t, k C.buf_t, k_len C.int32_t, block **C.uint8_t, size *C.int32_t) C.int32_t {
 	c := toCid(k, k_len)
 	bs := Lookup(int32(store))
 	if bs == nil {
@@ -82,7 +82,8 @@ func cgobs_has(store C.int32_t, k C.buf_t, k_len C.int32_t) C.int32_t {
 	switch err {
 	case nil:
 	case blockstore.ErrNotFound:
-		return ErrNotFound
+		// Some old blockstores still return this.
+		return 0
 	default:
 		return ErrIO
 	}
