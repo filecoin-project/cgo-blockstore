@@ -8,3 +8,7 @@ edition = "2018"
 [dependencies]
 cid = "0.7.0"
 multihash = "0.15.0"
+
+[patch.crates-io]
+multihash = { git = "https://github.com/multiformats/rust-multihash", branch = "next" }
+cid = { git = "https://github.com/multiformats/rust-cid", branch = "next" }

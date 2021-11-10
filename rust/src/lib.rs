@@ -1,5 +1,4 @@
-use cid::CidGeneric;
-use multihash::Size;
+use cid::Cid;
 use std::ptr;
 
 pub mod sys;
@@ -25,7 +24,7 @@ impl Blockstore {
         Blockstore { handle }
     }
 
-    pub fn has<S: Size>(&self, k: &CidGeneric<S>) -> Result<bool, Error> {
+    pub fn has(&self, k: &Cid) -> Result<bool, Error> {
         let k_bytes = k.to_bytes();
         unsafe {
             match sys::cgobs_has(self.handle, k_bytes.as_ptr(), k_bytes.len() as i32) {
@@ -44,7 +43,7 @@ impl Blockstore {
         }
     }
 
-    pub fn get<S: Size>(&self, k: &CidGeneric<S>) -> Result<Vec<u8>, Error> {
+    pub fn get(&self, k: &Cid) -> Result<Vec<u8>, Error> {
         let k_bytes = k.to_bytes();
         unsafe {
             let mut buf: *mut u8 = ptr::null_mut();
@@ -65,7 +64,7 @@ impl Blockstore {
         }
     }
 
-    pub fn put<S: Size>(&self, k: &CidGeneric<S>, block: &[u8]) -> Result<(), Error> {
+    pub fn put(&self, k: &Cid, block: &[u8]) -> Result<(), Error> {
         let k_bytes = k.to_bytes();
         unsafe {
             match sys::cgobs_put(
@@ -85,7 +84,7 @@ impl Blockstore {
         }
     }
 
-    pub fn delete<S: Size>(&self, k: &CidGeneric<S>) -> Result<(), Error> {
+    pub fn delete(&self, k: &Cid) -> Result<(), Error> {
         let k_bytes = k.to_bytes();
         unsafe {
             match sys::cgobs_delete(self.handle, k_bytes.as_ptr(), k_bytes.len() as i32) {
